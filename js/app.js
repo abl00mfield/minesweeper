@@ -16,6 +16,8 @@ const flag = "🚩";
 /*-------------------------------- Variables --------------------------------*/
 let board;
 let mineIndexes = [];
+let firstClick = false; //ensuring the first click is not a mine
+let mineFree = []; //this will store the location of the first click and the surrounding cells, so we don't put a mine there
 
 /*------------------------ Cached Element References ------------------------*/
 const boardElement = document.querySelector(".board");
@@ -34,7 +36,7 @@ function placeMines() {
       let mineRow = Math.floor(Math.random() * 10);
       let mineCol = Math.floor(Math.random() * 10);
       minePos = mineRow.toString() + mineCol.toString();
-    } while (mineIndexes.includes(minePos));
+    } while (mineIndexes.includes(minePos) || mineFree.includes(minePos)); //check if there is already a mine there or if this is where they first clicked
     mineIndexes.push(minePos);
     cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
   }
@@ -60,16 +62,36 @@ function createBoard() {
       adjacentMines: 0,
     }))
   );
-
-  placeMines();
 }
 
 function handleLeftClick(event) {
   const cell = event.target;
   const row = cell.id[0];
   const col = cell.id[1];
+  console.log(`row: ${row} col: ${col}`);
+  if (!firstClick) {
+    clearMineArea(row, col);
+    firstClick = true;
+    placeMines();
+  }
   board[row][col].isRevealed = true;
   cell.classList.add("revealed");
+}
+
+/*this function creates an array of coordinates where a mine should not be placed
+this ensures that the first place the user clicks and all the squares around it 
+will be free of mines */
+
+function clearMineArea(row, col) {
+  let rowAbove = parseInt(row) - 1;
+  let colLeft = parseInt(col) - 1;
+  for (let r = rowAbove; r < rowAbove + 3; r++) {
+    for (let c = colLeft; c < colLeft + 3; c++) {
+      if (r >= 0 && r < NUM_ROWS && c >= 0 && c < NUM_COLUMNS) {
+        mineFree.push(`${r}${c}`);
+      }
+    }
+  }
 }
 
 function handleReset() {
@@ -97,7 +119,9 @@ function init() {
   });
 
   mineIndexes = []; //reset array of mine indexes
-  placeMines();
+  firstClick = false;
+  mineFree = [];
+  //   placeMines();
 }
 
 createBoard();
