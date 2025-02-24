@@ -1,0 +1,44 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+h4 {
+  text-align: center;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: 400px;
+  height: 400px;
+  gap: 2px;
+  background-color: #ccc;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  background-color: lightgray;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.cell.revealed {
+  background-color: white;
+}
+
+.cell.mine {
+  background-color: red;
+}
+
+.cell.flagged {
+  background-color: yellow;
+}
