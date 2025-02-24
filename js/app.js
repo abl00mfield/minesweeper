@@ -15,6 +15,7 @@ const flag = "🚩";
 
 /*-------------------------------- Variables --------------------------------*/
 let board;
+let mineIndexes = [];
 
 /*------------------------ Cached Element References ------------------------*/
 const boardElement = document.querySelector(".board");
@@ -26,8 +27,22 @@ document.getElementById("reset").addEventListener("click", handleReset);
 
 /*-------------------------------- Functions --------------------------------*/
 
+function placeMines() {
+  for (let i = 0; i < NUM_MINES; i++) {
+    let minePos = "";
+    do {
+      let mineRow = Math.floor(Math.random() * 10);
+      let mineCol = Math.floor(Math.random() * 10);
+      minePos = mineRow.toString() + mineCol.toString();
+    } while (mineIndexes.includes(minePos));
+    mineIndexes.push(minePos);
+    cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
+  }
+}
+
 //dynamically create the board in HTML and the board state array
 function createBoard() {
+  //add all the cells in the HTML
   for (let i = 0; i < NUM_ROWS; i++) {
     for (let j = 0; j < NUM_COLUMNS; j++) {
       let cellElement = document.createElement("div");
@@ -36,6 +51,7 @@ function createBoard() {
       boardElement.appendChild(cellElement);
     }
   }
+  //set up the board game state array of objects
   board = Array.from({ length: NUM_ROWS }, () =>
     Array.from({ length: NUM_COLUMNS }, () => ({
       isRevealed: false,
@@ -44,6 +60,8 @@ function createBoard() {
       adjacentMines: 0,
     }))
   );
+
+  placeMines();
 }
 
 function handleLeftClick(event) {
@@ -52,7 +70,6 @@ function handleLeftClick(event) {
   const col = cell.id[1];
   board[row][col].isRevealed = true;
   cell.classList.add("revealed");
-  cell.textContent = "c";
 }
 
 function handleReset() {
@@ -61,7 +78,7 @@ function handleReset() {
 }
 
 function init() {
-  //set up the data for the board
+  //initialize back to beginning state
   board.forEach((row) => {
     row.forEach((cell) => {
       cell.isRevealed = false;
@@ -72,11 +89,15 @@ function init() {
   });
 
   //set each cell to it's initial state
+
   const cellElements = document.querySelectorAll(".cell");
   cellElements.forEach((cell) => {
     cell.className = "cell";
     cell.textContent = "";
   });
+
+  mineIndexes = []; //reset array of mine indexes
+  placeMines();
 }
 
 createBoard();
