@@ -3,6 +3,7 @@ body {
   flex-direction: column;
   align-items: center;
   font-family: Arial, sans-serif;
+  /* gap: 5px; */
 }
 
 h4 {
@@ -41,4 +42,11 @@ h4 {
 
 .cell.flagged {
   background-color: yellow;
+}
+
+button {
+  margin: 15px;
+  height: 30px;
+  width: 60px;
+  background-color: pink;
 }

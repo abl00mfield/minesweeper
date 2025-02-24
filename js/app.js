@@ -18,15 +18,16 @@ let board;
 
 /*------------------------ Cached Element References ------------------------*/
 const boardElement = document.querySelector(".board");
-const cellElements = document.querySelectorAll(".cell");
+
 /*----------------------------- Event Listeners -----------------------------*/
 
 boardElement.addEventListener("click", handleLeftClick);
+document.getElementById("reset").addEventListener("click", handleReset);
 
 /*-------------------------------- Functions --------------------------------*/
 
-//dynamically create the board
-function createHTMLBoard() {
+//dynamically create the board in HTML and the board state array
+function createBoard() {
   for (let i = 0; i < NUM_ROWS; i++) {
     for (let j = 0; j < NUM_COLUMNS; j++) {
       let cellElement = document.createElement("div");
@@ -35,6 +36,14 @@ function createHTMLBoard() {
       boardElement.appendChild(cellElement);
     }
   }
+  board = Array.from({ length: NUM_ROWS }, () =>
+    Array.from({ length: NUM_COLUMNS }, () => ({
+      isRevealed: false,
+      hasMine: false,
+      isFlagged: false,
+      adjacentMines: 0,
+    }))
+  );
 }
 
 function handleLeftClick(event) {
@@ -46,18 +55,28 @@ function handleLeftClick(event) {
   cell.textContent = "c";
 }
 
-function init() {
-  //set up the data for the board
-  board = Array.from({ length: NUM_ROWS }, () =>
-    Array.from({ length: NUM_COLUMNS }, () => ({
-      isRevealed: false,
-      hasMine: false,
-      isFlagged: false,
-      adjacentMines: 0,
-    }))
-  );
-
-  cellElements.forEach(index, value);
+function handleReset() {
+  console.log("reset");
+  init();
 }
 
-createHTMLBoard();
+function init() {
+  //set up the data for the board
+  board.forEach((row) => {
+    row.forEach((cell) => {
+      cell.isRevealed = false;
+      cell.hasMine = false;
+      cell.isFlagged = false;
+      cell.adjacentMines = 0;
+    });
+  });
+
+  //set each cell to it's initial state
+  const cellElements = document.querySelectorAll(".cell");
+  cellElements.forEach((cell) => {
+    cell.className = "cell";
+    cell.textContent = "";
+  });
+}
+
+createBoard();
