@@ -28,6 +28,7 @@ const boardElement = document.querySelector(".board");
 /*----------------------------- Event Listeners -----------------------------*/
 
 boardElement.addEventListener("click", handleLeftClick);
+boardElement.addEventListener("contextmenu", handleRightClick);
 document.getElementById("reset").addEventListener("click", handleReset);
 
 /*-------------------------------- Functions --------------------------------*/
@@ -45,7 +46,7 @@ function placeMines() {
     mineIndexes.push(minePos);
     board[mineRow][mineCol].hasMine = true;
     // console.log(mineIndexes);
-    console.log("mine Free: ", mineFree);
+    // console.log("mine Free: ", mineFree);
     cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
   }
 
@@ -94,6 +95,24 @@ function createBoard() {
   );
 }
 
+function handleRightClick(event) {
+  event.preventDefault();
+  const cell = event.target;
+  console.log("right click");
+  let [row, col] = cell.id.split("--");
+  row = parseInt(row);
+  col = parseInt(col);
+
+  if (board[row][col].isRevealed) return; //don't do anything if they click on a square already revealed
+  board[row][col].isFlagged = !board[row][col].isFlagged; //toggle the flag
+  cell.classList.toggle("flagged"); //toggle the class of flagged on the cell
+  if (board[row][col].isFlagged) {
+    cell.textContent = flag;
+  } else {
+    cell.textContent = "";
+  }
+}
+
 function handleLeftClick(event) {
   const cell = event.target;
   let [row, col] = cell.id.split("--");
@@ -125,7 +144,7 @@ function clearMineArea(row, col) {
       mineFree.push(`${nr}--${nc}`);
     }
   }
-  console.log(mineFree);
+  //   console.log(mineFree);
 }
 
 function handleReset() {
