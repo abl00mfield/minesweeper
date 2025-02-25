@@ -9,12 +9,18 @@
   </head>
   <body>
     <h1>MINESWEEPER</h1>
-    <h4>
+    <p>
       In the grid below there are 10 mines hiding! Your goal is to flag each
       mine by right clicking on the square and clearing all the other squares by
       left clicking on them. Each square will either be blank, contain a mine,
       or tell you the number of surrounding mines! Click on the grid to start
-    </h4>
+    </p>
+    <div class="header-container">
+      <div>MINES LEFT</div>
+      <div id="counter"></div>
+      <div>TIME ELAPSED</div>
+      <div id="timer"></div>
+    </div>
     <div class="board"></div>
     <button id="reset">Reset</button>
   </body>

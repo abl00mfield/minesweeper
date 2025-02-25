@@ -20,9 +20,11 @@ let board;
 let mineIndexes = [];
 let firstClick = false; //ensuring the first click is not a mine
 let mineFree = []; //this will store the location of the first click and the surrounding cells, so we don't put a mine there
+let minesLeftToFind = NUM_MINES;
 
 /*------------------------ Cached Element References ------------------------*/
 const boardElement = document.querySelector(".board");
+const counterElemement = document.getElementById("counter");
 
 /*----------------------------- Event Listeners -----------------------------*/
 
@@ -46,7 +48,7 @@ function placeMines() {
     board[mineRow][mineCol].hasMine = true;
     // console.log(mineIndexes);
     // console.log("mine Free: ", mineFree);
-    cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
+    //cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
   }
 
   calculateAdjacentMines();
@@ -109,6 +111,7 @@ function createBoard() {
       adjacentMines: 0,
     }))
   );
+  counterElemement.textContent = minesLeftToFind;
 }
 
 function handleRightClick(event) {
@@ -179,6 +182,8 @@ function revealCells(row, col) {
 
 function renderBoard() {
   //update gameboard to reflect game state
+
+  let flaggedCells = 0;
   for (let r = 0; r < NUM_ROWS; r++) {
     for (let c = 0; c < NUM_COLUMNS; c++) {
       const cellElement = document.getElementById(`${r}--${c}`);
@@ -191,12 +196,15 @@ function renderBoard() {
       } else {
         if (cell.isFlagged) {
           cellElement.textContent = flag;
+          flaggedCells++;
         } else {
           cellElement.textContent = "";
         }
       }
     }
   }
+  minesLeftToFind = NUM_MINES - flaggedCells;
+  counterElemement.textContent = minesLeftToFind;
   // console.log(board);
 }
 /*this function creates an array of coordinates where a mine should not be placed
@@ -218,6 +226,7 @@ function clearMineArea(row, col) {
 
 function handleReset() {
   init();
+  renderBoard();
 }
 
 function init() {
@@ -242,6 +251,7 @@ function init() {
   mineIndexes = []; //reset array of mine indexes
   firstClick = false;
   mineFree = [];
+  minesLeftToFind = NUM_MINES;
   //   placeMines();
 }
 
