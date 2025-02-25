@@ -71,9 +71,10 @@ h4 {
 
 button {
   margin: 15px;
-  height: 30px;
-  width: 60px;
-  background-color: pink;
+  height: 40px;
+  width: 75px;
+  background-color: red;
+  font-size: 1.5em;
 }
 .blue {
   color: blue;

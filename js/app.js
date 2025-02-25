@@ -21,10 +21,12 @@ let mineIndexes = [];
 let firstClick = false; //ensuring the first click is not a mine
 let mineFree = []; //this will store the location of the first click and the surrounding cells, so we don't put a mine there
 let minesLeftToFind = NUM_MINES;
+let gameState = "active";
 
 /*------------------------ Cached Element References ------------------------*/
 const boardElement = document.querySelector(".board");
 const counterElemement = document.getElementById("counter");
+const messageElement = document.getElementById("message");
 
 /*----------------------------- Event Listeners -----------------------------*/
 
@@ -116,53 +118,68 @@ function createBoard() {
 
 function handleRightClick(event) {
   event.preventDefault();
+  if (gameState === "active") {
+    const cell = event.target;
+    // console.log("right click");
+    let [row, col] = cell.id.split("--");
+    row = parseInt(row);
+    col = parseInt(col);
 
-  const cell = event.target;
-  // console.log("right click");
-  let [row, col] = cell.id.split("--");
-  row = parseInt(row);
-  col = parseInt(col);
+    if (board[row][col].isRevealed) return; //don't do anything if they click on a square already revealed
 
-  if (board[row][col].isRevealed) return; //don't do anything if they click on a square already revealed
-
-  board[row][col].isFlagged = !board[row][col].isFlagged; //toggle the flag
-  cell.classList.toggle("flagged"); //toggle the class of flagged on the cell
-  //renderBoard();
-  if (board[row][col].isFlagged) {
-    cell.textContent = flag;
-    minesLeftToFind -= 1;
-  } else {
-    cell.textContent = "";
-    minesLeftToFind += 1;
+    board[row][col].isFlagged = !board[row][col].isFlagged; //toggle the flag
+    cell.classList.toggle("flagged"); //toggle the class of flagged on the cell
+    //renderBoard();
+    if (board[row][col].isFlagged) {
+      cell.textContent = flag;
+      minesLeftToFind -= 1;
+    } else {
+      cell.textContent = "";
+      minesLeftToFind += 1;
+    }
+    counterElemement.textContent = minesLeftToFind;
   }
-  counterElemement.textContent = minesLeftToFind;
 }
 
 function handleLeftClick(event) {
-  const cell = event.target;
-  let [row, col] = cell.id.split("--");
-  row = parseInt(row);
-  col = parseInt(col);
-  //   console.log(`row: ${row} col: ${col}`);
-  if (!firstClick) {
-    clearMineArea(row, col);
-    firstClick = true;
-    placeMines();
+  if (gameState === "active") {
+    const cell = event.target;
+    let [row, col] = cell.id.split("--");
+    row = parseInt(row);
+    col = parseInt(col);
+    //   console.log(`row: ${row} col: ${col}`);
+    if (!firstClick) {
+      clearMineArea(row, col);
+      firstClick = true;
+      placeMines();
+    }
+    // board[row][col].isRevealed = true;
+    checkForMine(row, col);
+    revealCells(row, col);
+    renderBoard();
+    console.log("revealed: ", document.querySelectorAll(".revealed"));
+    console.log("amount needed to win: ", NUM_ROWS * NUM_COLUMNS - NUM_MINES);
+    if (
+      document.querySelectorAll(".revealed").length ===
+      NUM_ROWS * NUM_COLUMNS - NUM_MINES
+    ) {
+      messegeElement.textContent = "YOU WIN!!";
+      gameState = "won";
+    }
+
+    // if (board[row][col].adjacentMines) {
+    //   cell.textContent = board[row][col].adjacentMines;
+    // }
+    // cell.classList.add("revealed");
   }
-  // board[row][col].isRevealed = true;
-  checkForMine(row, col);
-  revealCells(row, col);
-  renderBoard();
-  // if (board[row][col].adjacentMines) {
-  //   cell.textContent = board[row][col].adjacentMines;
-  // }
-  // cell.classList.add("revealed");
 }
 
 function checkForMine(row, col) {
   const cellStr = `${row}--${col}`;
   if (mineIndexes.includes(cellStr)) {
     //mark all mines on board if they clicked on a mine
+    gameState = "lost";
+    messageElement.textContent = "YOU LOSE!!";
     mineIndexes.forEach((mineStr) => {
       const cellElement = document.getElementById(mineStr);
       cellElement.classList.add("mine");
@@ -260,6 +277,8 @@ function init() {
   firstClick = false;
   mineFree = [];
   minesLeftToFind = NUM_MINES;
+  gameState = "active";
+  messageElement.textContent = "";
   //   placeMines();
 }
 
