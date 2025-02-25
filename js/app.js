@@ -9,7 +9,6 @@ const MOVEMENTS = [
   [-1, 0], //top middle
   [-1, 1], //top right
   [0, -1], //left
-  [0, 0], //center
   [0, 1], //right
   [1, -1], //bottom left
   [1, 0], //bottom middle
@@ -136,6 +135,7 @@ this ensures that the first place the user clicks and all the squares around it
 will be free of mines */
 
 function clearMineArea(row, col) {
+  mineFree.push(`${row}--${col}`); //add the current cell to the list of space to clear
   for (let [r, c] of MOVEMENTS) {
     let nr = row + r;
     let nc = col + c;
