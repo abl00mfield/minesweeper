@@ -116,6 +116,7 @@ function createBoard() {
 
 function handleRightClick(event) {
   event.preventDefault();
+
   const cell = event.target;
   // console.log("right click");
   let [row, col] = cell.id.split("--");
@@ -123,14 +124,18 @@ function handleRightClick(event) {
   col = parseInt(col);
 
   if (board[row][col].isRevealed) return; //don't do anything if they click on a square already revealed
+
   board[row][col].isFlagged = !board[row][col].isFlagged; //toggle the flag
   cell.classList.toggle("flagged"); //toggle the class of flagged on the cell
-  renderBoard();
-  // if (board[row][col].isFlagged) {
-  //   cell.textContent = flag;
-  // } else {
-  //   cell.textContent = "";
-  // }
+  //renderBoard();
+  if (board[row][col].isFlagged) {
+    cell.textContent = flag;
+    minesLeftToFind -= 1;
+  } else {
+    cell.textContent = "";
+    minesLeftToFind += 1;
+  }
+  counterElemement.textContent = minesLeftToFind;
 }
 
 function handleLeftClick(event) {
@@ -145,6 +150,7 @@ function handleLeftClick(event) {
     placeMines();
   }
   // board[row][col].isRevealed = true;
+  checkForMine(row, col);
   revealCells(row, col);
   renderBoard();
   // if (board[row][col].adjacentMines) {
@@ -153,6 +159,17 @@ function handleLeftClick(event) {
   // cell.classList.add("revealed");
 }
 
+function checkForMine(row, col) {
+  const cellStr = `${row}--${col}`;
+  if (mineIndexes.includes(cellStr)) {
+    //mark all mines on board if they clicked on a mine
+    mineIndexes.forEach((mineStr) => {
+      const cellElement = document.getElementById(mineStr);
+      cellElement.classList.add("mine");
+      cellElement.textContent = mine;
+    });
+  }
+}
 /* a recursive function that reveals all the cells starting from the left
 click and reveals all the surrounding cells until it hits the edge
 of the board, a mine, a numbered square, or a flag */
@@ -163,7 +180,7 @@ function revealCells(row, col) {
     return; //if we are off the board
   }
   myCell = board[row][col];
-  console.log("inside revealCells, currentCell: ", myCell);
+  // console.log("inside revealCells, currentCell: ", myCell);
   if (myCell.isRevealed || myCell.isFlagged || myCell.hasMine) {
     return; //if we've hit a mine, a flagged cell, or a cell that is already revealed
   }
@@ -182,8 +199,7 @@ function revealCells(row, col) {
 
 function renderBoard() {
   //update gameboard to reflect game state
-
-  let flaggedCells = 0;
+  counterElemement.textContent = minesLeftToFind;
   for (let r = 0; r < NUM_ROWS; r++) {
     for (let c = 0; c < NUM_COLUMNS; c++) {
       const cellElement = document.getElementById(`${r}--${c}`);
@@ -193,18 +209,10 @@ function renderBoard() {
         if (cell.adjacentMines) {
           cellElement.textContent = cell.adjacentMines;
         }
-      } else {
-        if (cell.isFlagged) {
-          cellElement.textContent = flag;
-          flaggedCells++;
-        } else {
-          cellElement.textContent = "";
-        }
       }
     }
   }
-  minesLeftToFind = NUM_MINES - flaggedCells;
-  counterElemement.textContent = minesLeftToFind;
+
   // console.log(board);
 }
 /*this function creates an array of coordinates where a mine should not be placed
