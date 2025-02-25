@@ -4,11 +4,12 @@ const NUM_ROWS = 10;
 const NUM_MINES = 10;
 const mine = "💣";
 const flag = "🚩";
-const directions = [
+const MOVEMENTS = [
   [-1, -1], //top left
   [-1, 0], //top middle
   [-1, 1], //top right
   [0, -1], //left
+  [0, 0], //center
   [0, 1], //right
   [1, -1], //bottom left
   [1, 0], //bottom middle
@@ -32,19 +33,44 @@ document.getElementById("reset").addEventListener("click", handleReset);
 /*-------------------------------- Functions --------------------------------*/
 
 function placeMines() {
+  let mineRow = null;
+  let mineCol = null;
   for (let i = 0; i < NUM_MINES; i++) {
     let minePos = "";
     do {
-      let mineRow = Math.floor(Math.random() * 10);
-      let mineCol = Math.floor(Math.random() * 10);
+      mineRow = Math.floor(Math.random() * 10);
+      mineCol = Math.floor(Math.random() * 10);
       minePos = mineRow.toString() + "--" + mineCol.toString();
     } while (mineIndexes.includes(minePos) || mineFree.includes(minePos)); //check if there is already a mine there or if this is where they first clicked
     mineIndexes.push(minePos);
+    board[mineRow][mineCol].hasMine = true;
+    // console.log(mineIndexes);
+    console.log("mine Free: ", mineFree);
     cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
   }
+
+  calculateAdjacentMines();
 }
 
-function calculateAdjacentMines() {}
+function calculateAdjacentMines() {
+  for (let r = 0; r < NUM_ROWS; r++) {
+    for (let c = 0; c < NUM_COLUMNS; c++) {
+      if (!board[r][c].hasMine) {
+        let mineCount = 0;
+        for (let [dirR, dirC] of MOVEMENTS) {
+          let nRow = r + dirR;
+          let nCol = c + dirC;
+          if (nRow >= 0 && nRow < NUM_ROWS && nCol >= 0 && nCol < NUM_COLUMNS) {
+            if (board[nRow][nCol].hasMine) mineCount++;
+          }
+        }
+        board[r][c].adjacentMines = mineCount;
+        // console.log(`row: ${r} col: ${c} minesaround: ${mineCount}`);
+      }
+    }
+  }
+  //   console.log(board);
+}
 
 //dynamically create the board in HTML and the board state array
 function createBoard() {
@@ -73,13 +99,16 @@ function handleLeftClick(event) {
   let [row, col] = cell.id.split("--");
   row = parseInt(row);
   col = parseInt(col);
-  console.log(`row: ${row} col: ${col}`);
+  //   console.log(`row: ${row} col: ${col}`);
   if (!firstClick) {
     clearMineArea(row, col);
     firstClick = true;
     placeMines();
   }
   board[row][col].isRevealed = true;
+  if (board[row][col].adjacentMines) {
+    cell.textContent = board[row][col].adjacentMines;
+  }
   cell.classList.add("revealed");
 }
 
@@ -88,7 +117,7 @@ this ensures that the first place the user clicks and all the squares around it
 will be free of mines */
 
 function clearMineArea(row, col) {
-  for (let [r, c] of directions) {
+  for (let [r, c] of MOVEMENTS) {
     let nr = row + r;
     let nc = col + c;
     if (nr >= 0 && nr < NUM_ROWS && nc >= 0 && nc < NUM_COLUMNS) {
@@ -96,6 +125,7 @@ function clearMineArea(row, col) {
       mineFree.push(`${nr}--${nc}`);
     }
   }
+  console.log(mineFree);
 }
 
 function handleReset() {
