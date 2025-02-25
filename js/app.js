@@ -55,6 +55,7 @@ function placeMines() {
 function calculateAdjacentMines() {
   for (let r = 0; r < NUM_ROWS; r++) {
     for (let c = 0; c < NUM_COLUMNS; c++) {
+      const cellElement = document.getElementById(`${r}--${c}`);
       if (!board[r][c].hasMine) {
         let mineCount = 0;
         for (let [dirR, dirC] of MOVEMENTS) {
@@ -65,6 +66,22 @@ function calculateAdjacentMines() {
           }
         }
         board[r][c].adjacentMines = mineCount;
+        switch (
+          board[r][c].adjacentMines //different colors for different number of mines
+        ) {
+          case 1:
+            cellElement.classList.add("blue");
+            break;
+          case 2:
+            cellElement.classList.add("green");
+            break;
+          case 3:
+            cellElement.classList.add("orange");
+            break;
+          case 4:
+            cellElement.classList.add("purple");
+            break;
+        }
         // console.log(`row: ${r} col: ${c} minesaround: ${mineCount}`);
       }
     }
@@ -97,7 +114,7 @@ function createBoard() {
 function handleRightClick(event) {
   event.preventDefault();
   const cell = event.target;
-  console.log("right click");
+  // console.log("right click");
   let [row, col] = cell.id.split("--");
   row = parseInt(row);
   col = parseInt(col);
@@ -105,11 +122,12 @@ function handleRightClick(event) {
   if (board[row][col].isRevealed) return; //don't do anything if they click on a square already revealed
   board[row][col].isFlagged = !board[row][col].isFlagged; //toggle the flag
   cell.classList.toggle("flagged"); //toggle the class of flagged on the cell
-  if (board[row][col].isFlagged) {
-    cell.textContent = flag;
-  } else {
-    cell.textContent = "";
-  }
+  renderBoard();
+  // if (board[row][col].isFlagged) {
+  //   cell.textContent = flag;
+  // } else {
+  //   cell.textContent = "";
+  // }
 }
 
 function handleLeftClick(event) {
@@ -123,13 +141,64 @@ function handleLeftClick(event) {
     firstClick = true;
     placeMines();
   }
-  board[row][col].isRevealed = true;
-  if (board[row][col].adjacentMines) {
-    cell.textContent = board[row][col].adjacentMines;
-  }
-  cell.classList.add("revealed");
+  // board[row][col].isRevealed = true;
+  revealCells(row, col);
+  renderBoard();
+  // if (board[row][col].adjacentMines) {
+  //   cell.textContent = board[row][col].adjacentMines;
+  // }
+  // cell.classList.add("revealed");
 }
 
+/* a recursive function that reveals all the cells starting from the left
+click and reveals all the surrounding cells until it hits the edge
+of the board, a mine, a numbered square, or a flag */
+
+function revealCells(row, col) {
+  //base cases
+  if (row < 0 || row > NUM_ROWS - 1 || col < 0 || col > NUM_COLUMNS - 1) {
+    return; //if we are off the board
+  }
+  myCell = board[row][col];
+  console.log("inside revealCells, currentCell: ", myCell);
+  if (myCell.isRevealed || myCell.isFlagged || myCell.hasMine) {
+    return; //if we've hit a mine, a flagged cell, or a cell that is already revealed
+  }
+  myCell.isRevealed = true;
+  if (myCell.adjacentMines) {
+    return;
+  }
+
+  //now call the function on all of the surrounding cells
+  for (let [checkRow, checkCol] of MOVEMENTS) {
+    let newRow = row + checkRow;
+    let newCol = col + checkCol;
+    revealCells(newRow, newCol);
+  }
+}
+
+function renderBoard() {
+  //update gameboard to reflect game state
+  for (let r = 0; r < NUM_ROWS; r++) {
+    for (let c = 0; c < NUM_COLUMNS; c++) {
+      const cellElement = document.getElementById(`${r}--${c}`);
+      const cell = board[r][c];
+      if (cell.isRevealed) {
+        cellElement.classList.add("revealed");
+        if (cell.adjacentMines) {
+          cellElement.textContent = cell.adjacentMines;
+        }
+      } else {
+        if (cell.isFlagged) {
+          cellElement.textContent = flag;
+        } else {
+          cellElement.textContent = "";
+        }
+      }
+    }
+  }
+  // console.log(board);
+}
 /*this function creates an array of coordinates where a mine should not be placed
 this ensures that the first place the user clicks and all the squares around it 
 will be free of mines */
