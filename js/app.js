@@ -50,7 +50,7 @@ function placeMines() {
     board[mineRow][mineCol].hasMine = true;
     // console.log(mineIndexes);
     // console.log("mine Free: ", mineFree);
-    //cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
+    cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
   }
 
   calculateAdjacentMines();
@@ -157,20 +157,27 @@ function handleLeftClick(event) {
     checkForMine(row, col);
     revealCells(row, col);
     renderBoard();
-    console.log("revealed: ", document.querySelectorAll(".revealed"));
-    console.log("amount needed to win: ", NUM_ROWS * NUM_COLUMNS - NUM_MINES);
-    if (
-      document.querySelectorAll(".revealed").length ===
-      NUM_ROWS * NUM_COLUMNS - NUM_MINES
-    ) {
-      messegeElement.textContent = "YOU WIN!!";
-      gameState = "won";
-    }
+    checkForWin();
+    // console.log("revealed: ", document.querySelectorAll(".revealed").length);
+    // console.log("amount needed to win: ", NUM_ROWS * NUM_COLUMNS - NUM_MINES);
 
     // if (board[row][col].adjacentMines) {
     //   cell.textContent = board[row][col].adjacentMines;
     // }
     // cell.classList.add("revealed");
+  }
+}
+
+function checkForWin() {
+  if (
+    document.querySelectorAll(".revealed").length === //the number of revealed cells is equal to
+    NUM_ROWS * NUM_COLUMNS - NUM_MINES //the board size - the number of mines
+  ) {
+    messageElement.textContent = "YOU WIN!!";
+    gameState = "won";
+    const audioElement = new Audio("../assets/audio/win.mp3");
+    audioElement.volume = 0.075;
+    audioElement.play();
   }
 }
 
@@ -180,6 +187,9 @@ function checkForMine(row, col) {
     //mark all mines on board if they clicked on a mine
     gameState = "lost";
     messageElement.textContent = "YOU LOSE!!";
+    const audioElement = new Audio("../assets/audio/explosion.mp3");
+    // audioElement.volume = 0.075;
+    audioElement.play();
     mineIndexes.forEach((mineStr) => {
       const cellElement = document.getElementById(mineStr);
       cellElement.classList.add("mine");
