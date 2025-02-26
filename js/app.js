@@ -1,6 +1,6 @@
 /*-------------------------------- Constants --------------------------------*/
-const NUM_COLUMNS = 10;
-const NUM_ROWS = 10;
+const NUM_COLUMNS = 9;
+const NUM_ROWS = 9;
 const NUM_MINES = 10;
 const mine = "💣";
 const pinkFlag = "../assets/images/pink.png";
@@ -52,13 +52,14 @@ function placeMines() {
   for (let i = 0; i < NUM_MINES; i++) {
     let minePos = "";
     do {
-      mineRow = Math.floor(Math.random() * 10); //generate an random row and column
-      mineCol = Math.floor(Math.random() * 10);
+      mineRow = Math.floor(Math.random() * NUM_ROWS); //generate an random row and column
+      mineCol = Math.floor(Math.random() * NUM_COLUMNS);
       minePos = mineRow.toString() + "--" + mineCol.toString();
     } while (mineIndexes.includes(minePos) || mineFree.includes(minePos)); //check if there is already a mine there or if this is where they first clicked
     mineIndexes.push(minePos); //this string holds all the mine positions
     board[mineRow][mineCol].hasMine = true; //update the state of the board
   }
+  console.log(mineIndexes);
   calculateAdjacentMines(); //calculate the adjacent mines
 }
 
@@ -94,6 +95,8 @@ function calculateAdjacentMines() {
           case 4:
             cellElement.classList.add("purple");
             break;
+          case 5:
+            cellElement.classList.add("red");
         }
       }
     }
@@ -335,4 +338,6 @@ function init() {
   updateTimer();
 }
 
+document.documentElement.style.setProperty("--num-rows", NUM_ROWS);
+document.documentElement.style.setProperty("--num-cols", NUM_COLUMNS);
 createBoard();
