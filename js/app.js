@@ -1,7 +1,7 @@
 /*-------------------------------- Constants --------------------------------*/
-const NUM_COLUMNS = 9;
-const NUM_ROWS = 9;
-const NUM_MINES = 10;
+const NUM_COLUMNS = 8;
+const NUM_ROWS = 8;
+const NUM_MINES = 9;
 const mine = "💣";
 const pinkFlag = "../assets/images/pink.png";
 const audioWin = new Audio("../assets/audio/win.mp3");
@@ -34,12 +34,15 @@ const boardElement = document.querySelector(".board");
 const counterElemement = document.getElementById("counter");
 const messageElement = document.getElementById("message");
 const timerElement = document.getElementById("timer");
+const instrElement = document.getElementById("instructions");
+const popupElement = document.getElementById("popup");
 
 /*----------------------------- Event Listeners -----------------------------*/
 
 boardElement.addEventListener("click", handleLeftClick);
 boardElement.addEventListener("contextmenu", handleRightClick);
 document.getElementById("reset").addEventListener("click", handleReset);
+document.getElementById("close-popup").addEventListener("click", closeMessage);
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -159,6 +162,7 @@ function handleRightClick(event) {
 }
 
 function handleLeftClick(event) {
+  instructions.classList.add("hidden");
   if (gameState === "active") {
     const cell = event.target.closest(".cell");
     let [row, col] = cell.id.split("--");
@@ -193,7 +197,7 @@ function checkForWin() {
     NUM_ROWS * NUM_COLUMNS - NUM_MINES //the board size - the number of mines
   ) {
     stopTimer();
-    messageElement.textContent = "YOU WIN!!";
+    showMessage("YOU WIN!!");
     gameState = "won";
     audioWin.play();
   }
@@ -206,7 +210,8 @@ function checkForMine(row, col) {
     //mark all mines on board if they clicked on a mine
     gameState = "lost";
 
-    messageElement.textContent = "YOU LOSE!!";
+    showMessage("YOU LOSE!!");
+
     audioLose.play();
     mineIndexes.forEach((mineStr) => {
       const cellElement = document.getElementById(mineStr);
@@ -336,6 +341,19 @@ function init() {
   seconds = 0;
   isRunning = false;
   updateTimer();
+  instrElement.classList.remove("hidden");
+}
+
+function showMessage(message) {
+  messageElement.textContent = message;
+  popupElement.style.display = "flex";
+}
+
+function closeMessage() {
+  popupElement.style.display = "none";
+  stopTimer();
+  init();
+  renderBoard();
 }
 
 document.documentElement.style.setProperty("--num-rows", NUM_ROWS);

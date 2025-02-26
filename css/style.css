@@ -32,14 +32,16 @@ h1 {
   margin: 0px;
 }
 
-p {
+#message {
+  font-size: calc(5vmin);
+}
+
+#instructions {
   text-align: center;
   width: 60%;
   font-size: 1.2em;
   margin: 0px;
   background-color: white;
-  /* border: solid red 1px; */
-  /* font-family: arial; */
 }
 
 .cell img {
@@ -52,15 +54,13 @@ p {
   grid-template-columns: repeat(var(--num-cols), 1fr);
   grid-template-rows: repeat(var(--num-rows), 1fr);
   width: 65vmin;
-  height: 65vmin;
-  /* gap: 2px; */
+  aspect-ratio: var(--num-cols) / var(--num-rows);
   background-color: var(--main-gray);
 }
 
 #counter {
   border: solid black 1px;
-  font-size: 1.2em;
-  /* margin: 10px; */
+  font-size: calc(3vmin);
   padding: 5px;
   color: var(--main-red);
   font-family: "Press Start 2P", serif;
@@ -70,12 +70,13 @@ p {
 
 #timer {
   border: solid black 1px;
-  font-size: 1.2em;
-  /* margin: 10px; */
+  font-size: calc(3vmin);
   padding: 5px;
   color: var(--main-red);
   font-family: "Press Start 2P", serif;
   margin-top: 5px;
+  width: auto;
+  flex-shrink: 0;
 }
 
 .game-info-container {
@@ -84,9 +85,10 @@ p {
   text-align: center;
   width: 30%;
   align-items: center;
-  font-size: 1.2em;
+  font-size: calc(3vmin);
   margin-bottom: 10px;
 }
+
 .cell {
   display: flex;
   align-items: center;
@@ -113,24 +115,70 @@ p {
 
 button {
   margin: 15px;
-  /* height: 40px; */
-  /* width: 75px; */
   background-color: var(--main-red);
   font-size: 1.5em;
   font-family: "Orbitron", Arial, sans-serif;
 }
+
 .blue {
   color: var(--main-blue);
 }
+
 .green {
   color: var(--main-green);
 }
+
 .orange {
   color: var(--main-orange);
 }
+
 .purple {
   color: var(--main-purple);
 }
+
 .red {
   color: var(--main-red);
+}
+
+.hidden {
+  display: none;
+}
+
+/* The overlay background (cover the entire screen) */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  display: none; /* Initially hidden */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it appears above other content */
+}
+
+/* The popup content box */
+.popup-content {
+  background-color: var(--main-red);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 300px;
+  width: 100%;
+}
+
+/* Button to close the popup */
+.close-btn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background-color: var(--main-gray);
 }
