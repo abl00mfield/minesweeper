@@ -54,7 +54,7 @@ function placeMines() {
     board[mineRow][mineCol].hasMine = true;
     // console.log(mineIndexes);
     // console.log("mine Free: ", mineFree);
-    cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
+    // cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
   }
 
   calculateAdjacentMines();
@@ -159,6 +159,7 @@ function handleLeftClick(event) {
       firstClick = true;
       placeMines();
     }
+    if (board[row][col].isFlagged) return;
     // board[row][col].isRevealed = true;
     checkForMine(row, col);
     revealCells(row, col);
