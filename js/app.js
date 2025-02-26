@@ -3,7 +3,7 @@ const NUM_COLUMNS = 10;
 const NUM_ROWS = 10;
 const NUM_MINES = 10;
 const mine = "💣";
-const flag = "🚩";
+const pinkFlag = "../assets/images/pink.png";
 const audioWin = new Audio("../assets/audio/win.mp3");
 const audioLose = new Audio("../assets/audio/explosion.mp3");
 const MOVEMENTS = [
@@ -43,33 +43,35 @@ document.getElementById("reset").addEventListener("click", handleReset);
 
 /*-------------------------------- Functions --------------------------------*/
 
+//This function places all the mines on the board and excludes the first cell that is clicked on to make game play easier for the user
+//There is an easy mode that also clears the area around the first click to make game play easier
+
 function placeMines() {
   let mineRow = null;
   let mineCol = null;
   for (let i = 0; i < NUM_MINES; i++) {
     let minePos = "";
     do {
-      mineRow = Math.floor(Math.random() * 10);
+      mineRow = Math.floor(Math.random() * 10); //generate an random row and column
       mineCol = Math.floor(Math.random() * 10);
       minePos = mineRow.toString() + "--" + mineCol.toString();
     } while (mineIndexes.includes(minePos) || mineFree.includes(minePos)); //check if there is already a mine there or if this is where they first clicked
-    mineIndexes.push(minePos);
-    board[mineRow][mineCol].hasMine = true;
-    // console.log(mineIndexes);
-    // console.log("mine Free: ", mineFree);
-    // cell = document.getElementById(minePos).classList.add("mine"); //add the mine to the cell in HTML
+    mineIndexes.push(minePos); //this string holds all the mine positions
+    board[mineRow][mineCol].hasMine = true; //update the state of the board
   }
-
-  calculateAdjacentMines();
+  calculateAdjacentMines(); //calculate the adjacent mines
 }
 
+/* this function goes over the entire board and updates the board array with
+the adjacent mine counts */
 function calculateAdjacentMines() {
   for (let r = 0; r < NUM_ROWS; r++) {
     for (let c = 0; c < NUM_COLUMNS; c++) {
-      const cellElement = document.getElementById(`${r}--${c}`);
+      const cellElement = document.getElementById(`${r}--${c}`); //grad the cellElement
       if (!board[r][c].hasMine) {
         let mineCount = 0;
         for (let [dirR, dirC] of MOVEMENTS) {
+          //count the mines all around the cell
           let nRow = r + dirR;
           let nCol = c + dirC;
           if (nRow >= 0 && nRow < NUM_ROWS && nCol >= 0 && nCol < NUM_COLUMNS) {
@@ -93,11 +95,9 @@ function calculateAdjacentMines() {
             cellElement.classList.add("purple");
             break;
         }
-        // console.log(`row: ${r} col: ${c} minesaround: ${mineCount}`);
       }
     }
   }
-  //   console.log(board);
 }
 
 //dynamically create the board in HTML and the board state array
@@ -120,29 +120,36 @@ function createBoard() {
       adjacentMines: 0,
     }))
   );
-  counterElemement.textContent = minesLeftToFind;
-  setUpTimer();
+  counterElemement.textContent = minesLeftToFind; //initialize the counter
+  updateTimer(); //initialize the timer
 }
 
 function handleRightClick(event) {
   event.preventDefault();
+  if (!firstClick) {
+    startTimer();
+  }
   if (gameState === "active") {
-    const cell = event.target;
-    // console.log("right click");
+    const cell = event.target.closest(".cell"); //grab the cell clicked on, and not the image if there is one
+    let imgElement = cell.querySelector("img"); //if the cell has an image (flag) grab it so we can delete
     let [row, col] = cell.id.split("--");
     row = parseInt(row);
     col = parseInt(col);
-
     if (board[row][col].isRevealed) return; //don't do anything if they click on a square already revealed
 
     board[row][col].isFlagged = !board[row][col].isFlagged; //toggle the flag
     cell.classList.toggle("flagged"); //toggle the class of flagged on the cell
-    //renderBoard();
+
     if (board[row][col].isFlagged) {
-      cell.textContent = flag;
+      let newImg = document.createElement("img"); //add the flag image to the HTML
+      newImg.setAttribute("src", pinkFlag);
+      newImg.setAttribute("alt", "Pink Flag");
+      cell.appendChild(newImg);
       minesLeftToFind -= 1;
     } else {
-      cell.textContent = "";
+      if (imgElement) {
+        imgElement.remove();
+      }
       minesLeftToFind += 1;
     }
     counterElemement.textContent = minesLeftToFind;
@@ -151,11 +158,10 @@ function handleRightClick(event) {
 
 function handleLeftClick(event) {
   if (gameState === "active") {
-    const cell = event.target;
+    const cell = event.target.closest(".cell");
     let [row, col] = cell.id.split("--");
     row = parseInt(row);
     col = parseInt(col);
-    //   console.log(`row: ${row} col: ${col}`);
     if (!firstClick) {
       startTimer();
       clearMineArea(row, col);
@@ -249,9 +255,8 @@ function renderBoard() {
       }
     }
   }
-
-  // console.log(board);
 }
+
 /*this function creates an array of coordinates where a mine should not be placed
 this ensures that the first place the user clicks and all the squares around it 
 will be free of mines */
@@ -268,7 +273,6 @@ function clearMineArea(row, col) {
       }
     }
   }
-  //   console.log(mineFree);
 }
 
 function handleReset() {
@@ -276,7 +280,7 @@ function handleReset() {
   renderBoard();
 }
 
-function setUpTimer() {
+function updateTimer() {
   let minutes = Math.floor(seconds / 60);
   let secs = seconds % 60;
   timerElement.textContent =
@@ -290,7 +294,7 @@ function startTimer() {
     isRunning = true;
     gameTimer = setInterval(() => {
       seconds++;
-      setUpTimer();
+      updateTimer();
     }, 1000);
   }
 }
@@ -302,7 +306,6 @@ function stopTimer() {
 
 function init() {
   //initialize back to beginning state
-
   board.forEach((row) => {
     row.forEach((cell) => {
       cell.isRevealed = false;
@@ -313,13 +316,13 @@ function init() {
   });
 
   //set each cell to it's initial state
-
   const cellElements = document.querySelectorAll(".cell");
   cellElements.forEach((cell) => {
     cell.className = "cell";
     cell.textContent = "";
   });
 
+  //reset all game state variables
   mineIndexes = []; //reset array of mine indexes
   firstClick = false;
   mineFree = [];
@@ -328,8 +331,7 @@ function init() {
   messageElement.textContent = "";
   seconds = 0;
   isRunning = false;
-  setUpTimer();
-  //   placeMines();
+  updateTimer();
 }
 
 createBoard();
