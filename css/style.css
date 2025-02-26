@@ -7,6 +7,10 @@ body {
   font-family: Arial, sans-serif;
   /* gap: 5px; */
 }
+p {
+  text-align: center;
+  width: 75%;
+}
 
 h4 {
   text-align: center;
@@ -25,25 +29,28 @@ h4 {
 #counter {
   border: solid black 1px;
   font-size: 1.2em;
-  margin: 10px;
+  /* margin: 10px; */
   padding: 5px;
   color: red;
   font-family: "Press Start 2P", serif;
 }
 #timer {
   border: solid black 1px;
-  font-size: 1.2em;
-  margin: 10px;
+  font-size: 1em;
+  /* margin: 10px; */
   padding: 5px;
   color: red;
+  font-family: "Press Start 2P", serif;
 }
+
 .header-container {
   display: flex;
   justify-content: space-between;
 
-  width: 400px;
+  width: 500px;
   align-items: center;
   font-size: 1.2em;
+  margin-bottom: 20px;
 }
 .cell {
   display: flex;

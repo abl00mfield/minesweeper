@@ -22,11 +22,15 @@ let firstClick = false; //ensuring the first click is not a mine
 let mineFree = []; //this will store the location of the first click and the surrounding cells, so we don't put a mine there
 let minesLeftToFind = NUM_MINES;
 let gameState = "active";
+let gameTimer;
+let seconds = 0;
+let isRunning = false;
 
 /*------------------------ Cached Element References ------------------------*/
 const boardElement = document.querySelector(".board");
 const counterElemement = document.getElementById("counter");
 const messageElement = document.getElementById("message");
+const timerElement = document.getElementById("timer");
 
 /*----------------------------- Event Listeners -----------------------------*/
 
@@ -114,6 +118,7 @@ function createBoard() {
     }))
   );
   counterElemement.textContent = minesLeftToFind;
+  setUpTimer();
 }
 
 function handleRightClick(event) {
@@ -149,6 +154,7 @@ function handleLeftClick(event) {
     col = parseInt(col);
     //   console.log(`row: ${row} col: ${col}`);
     if (!firstClick) {
+      startTimer();
       clearMineArea(row, col);
       firstClick = true;
       placeMines();
@@ -165,6 +171,7 @@ function handleLeftClick(event) {
     //   cell.textContent = board[row][col].adjacentMines;
     // }
     // cell.classList.add("revealed");
+  } else {
   }
 }
 
@@ -173,10 +180,10 @@ function checkForWin() {
     document.querySelectorAll(".revealed").length === //the number of revealed cells is equal to
     NUM_ROWS * NUM_COLUMNS - NUM_MINES //the board size - the number of mines
   ) {
+    stopTimer();
     messageElement.textContent = "YOU WIN!!";
     gameState = "won";
     const audioElement = new Audio("../assets/audio/win.mp3");
-    audioElement.volume = 0.075;
     audioElement.play();
   }
 }
@@ -184,8 +191,10 @@ function checkForWin() {
 function checkForMine(row, col) {
   const cellStr = `${row}--${col}`;
   if (mineIndexes.includes(cellStr)) {
+    stopTimer();
     //mark all mines on board if they clicked on a mine
     gameState = "lost";
+
     messageElement.textContent = "YOU LOSE!!";
     const audioElement = new Audio("../assets/audio/explosion.mp3");
     // audioElement.volume = 0.075;
@@ -264,8 +273,33 @@ function handleReset() {
   renderBoard();
 }
 
+function setUpTimer() {
+  let minutes = Math.floor(seconds / 60);
+  let secs = seconds % 60;
+  timerElement.textContent =
+    minutes.toString().padStart(2, "0") +
+    ":" +
+    secs.toString().padStart(2, "0");
+}
+
+function startTimer() {
+  if (!isRunning) {
+    isRunning = true;
+    gameTimer = setInterval(() => {
+      seconds++;
+      setUpTimer();
+    }, 1000);
+  }
+}
+
+function stopTimer() {
+  clearInterval(gameTimer);
+  isRunning = false;
+}
+
 function init() {
   //initialize back to beginning state
+
   board.forEach((row) => {
     row.forEach((cell) => {
       cell.isRevealed = false;
@@ -289,6 +323,9 @@ function init() {
   minesLeftToFind = NUM_MINES;
   gameState = "active";
   messageElement.textContent = "";
+  seconds = 0;
+  isRunning = false;
+  setUpTimer();
   //   placeMines();
 }
 
