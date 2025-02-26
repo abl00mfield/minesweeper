@@ -4,6 +4,8 @@ const NUM_ROWS = 10;
 const NUM_MINES = 10;
 const mine = "💣";
 const flag = "🚩";
+const audioWin = new Audio("../assets/audio/win.mp3");
+const audioLose = new Audio("../assets/audio/explosion.mp3");
 const MOVEMENTS = [
   [-1, -1], //top left
   [-1, 0], //top middle
@@ -25,6 +27,7 @@ let gameState = "active";
 let gameTimer;
 let seconds = 0;
 let isRunning = false;
+let easyMode = false;
 
 /*------------------------ Cached Element References ------------------------*/
 const boardElement = document.querySelector(".board");
@@ -184,8 +187,7 @@ function checkForWin() {
     stopTimer();
     messageElement.textContent = "YOU WIN!!";
     gameState = "won";
-    const audioElement = new Audio("../assets/audio/win.mp3");
-    audioElement.play();
+    audioWin.play();
   }
 }
 
@@ -197,9 +199,7 @@ function checkForMine(row, col) {
     gameState = "lost";
 
     messageElement.textContent = "YOU LOSE!!";
-    const audioElement = new Audio("../assets/audio/explosion.mp3");
-    // audioElement.volume = 0.075;
-    audioElement.play();
+    audioLose.play();
     mineIndexes.forEach((mineStr) => {
       const cellElement = document.getElementById(mineStr);
       cellElement.classList.add("mine");
@@ -258,12 +258,14 @@ will be free of mines */
 
 function clearMineArea(row, col) {
   mineFree.push(`${row}--${col}`); //add the current cell to the list of space to clear
-  for (let [r, c] of MOVEMENTS) {
-    let nr = row + r;
-    let nc = col + c;
-    if (nr >= 0 && nr < NUM_ROWS && nc >= 0 && nc < NUM_COLUMNS) {
-      //if this area around the cell is on the board
-      mineFree.push(`${nr}--${nc}`);
+  if (easyMode) {
+    for (let [r, c] of MOVEMENTS) {
+      let nr = row + r;
+      let nc = col + c;
+      if (nr >= 0 && nr < NUM_ROWS && nc >= 0 && nc < NUM_COLUMNS) {
+        //if this area around the cell is on the board
+        mineFree.push(`${nr}--${nc}`);
+      }
     }
   }
   //   console.log(mineFree);

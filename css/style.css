@@ -1,20 +1,41 @@
-@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Poiret+One&family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Press+Start+2P&display=swap");
+
+:root {
+  --main-red: red;
+  --main-blue: blue;
+  --main-yellow: yellow;
+  --main-purple: purple;
+  --main-gray: lightgrey;
+  --main-white: white;
+  --main-orange: orange;
+}
+
+* {
+  margin: 0px;
+  box-sizing: border-box;
+}
 
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: Arial, sans-serif;
+  font-family: "Orbitron", Arial, sans-serif;
   background-image: url(../assets/images/white-texture.jpg);
-  /* gap: 5px; */
-}
-p {
-  text-align: center;
-  width: 75%;
+  gap: 10px;
 }
 
-h4 {
+h1 {
+  font-size: 2.5em;
+  margin: 0px;
+}
+
+p {
   text-align: center;
+  width: 60%;
+  font-size: 1.2em;
+  margin: 0px;
+  /* border: solid red 1px; */
+  /* font-family: arial; */
 }
 
 .board {
@@ -23,8 +44,8 @@ h4 {
   grid-template-rows: repeat(10, 1fr);
   width: 400px;
   height: 400px;
-  gap: 2px;
-  background-color: #ccc;
+  /* gap: 2px; */
+  background-color: var(--main-gray);
 }
 
 #counter {
@@ -32,26 +53,30 @@ h4 {
   font-size: 1.2em;
   /* margin: 10px; */
   padding: 5px;
-  color: red;
+  color: var(--main-red);
   font-family: "Press Start 2P", serif;
+  text-align: center;
+  margin-top: 5px;
 }
+
 #timer {
   border: solid black 1px;
-  font-size: 1em;
+  font-size: 1.2em;
   /* margin: 10px; */
   padding: 5px;
-  color: red;
+  color: var(--main-red);
   font-family: "Press Start 2P", serif;
+  margin-top: 5px;
 }
 
-.header-container {
+.game-info-container {
   display: flex;
-  justify-content: space-between;
-
-  width: 500px;
+  justify-content: space-evenly;
+  text-align: center;
+  width: 30%;
   align-items: center;
   font-size: 1.2em;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .cell {
   display: flex;
@@ -60,39 +85,40 @@ h4 {
   width: 100%;
   height: 100%;
   border: 1px solid black;
-  background-color: lightgray;
+  background-color: var(--main-gray);
   cursor: pointer;
   font-size: 1.5rem;
 }
 
 .cell.revealed {
-  background-color: white;
+  background-color: var(--main-white);
 }
 
 .cell.mine {
-  background-color: red;
+  background-color: var(--main-red);
 }
 
 .cell.flagged {
-  background-color: yellow;
+  background-color: var(--main-yellow);
 }
 
 button {
   margin: 15px;
-  height: 40px;
-  width: 75px;
-  background-color: red;
+  /* height: 40px; */
+  /* width: 75px; */
+  background-color: var(--main-red);
   font-size: 1.5em;
+  font-family: "Orbitron", Arial, sans-serif;
 }
 .blue {
-  color: blue;
+  color: var(--main-blue);
 }
 .green {
-  color: green;
+  color: var(--main-green);
 }
 .orange {
-  color: orangered;
+  color: var(--main-orange);
 }
 .purple {
-  color: purple;
+  color: var(--main-purple);
 }
