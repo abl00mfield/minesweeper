@@ -126,9 +126,8 @@ function createBoard() {
 
 function handleRightClick(event) {
   event.preventDefault();
-  if (!firstClick) {
-    startTimer();
-  }
+  if (!firstClick) return;
+
   if (gameState === "active") {
     const cell = event.target.closest(".cell"); //grab the cell clicked on, and not the image if there is one
     let imgElement = cell.querySelector("img"); //if the cell has an image (flag) grab it so we can delete
@@ -276,6 +275,7 @@ function clearMineArea(row, col) {
 }
 
 function handleReset() {
+  stopTimer();
   init();
   renderBoard();
 }
@@ -292,6 +292,7 @@ function updateTimer() {
 function startTimer() {
   if (!isRunning) {
     isRunning = true;
+    clearInterval(gameTimer);
     gameTimer = setInterval(() => {
       seconds++;
       updateTimer();
