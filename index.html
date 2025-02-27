@@ -10,31 +10,81 @@
   </head>
   <body>
     <h1>💣 MINESWEEPER 💣</h1>
-    <p id="instructions">
-      In the grid below there are 10 mines hiding! Your goal is to flag each
-      mine by right clicking on the square and clearing all the other squares by
-      left clicking on them. Each square will either be blank, contain a mine,
-      or tell you the number of surrounding mines! Click on the grid to start
-    </p>
+    <div id="intro">
+      <h3>Welcome to the game! Here’s a quick guide to get you started:</h3>
+      <ul>
+        <li>
+          Objective: The goal is to uncover all the cells that don’t contain
+          mines. Be careful, as clicking on a mine will end the game!
+        </li>
+        <li>
+          Click to Reveal: Left-click on any cell to reveal what’s inside. If
+          the cell contains a number, it tells you how many mines are around
+          that cell. If it’s empty, it will uncover nearby cells automatically.
+        </li>
+        <li>
+          Flagging Mines: Right-click to place a flag on a cell you think
+          contains a mine. This will help you keep track of where you suspect
+          the mines are.
+        </li>
+        <li>
+          Winning: To win, reveal all cells that don’t contain mines. Be sure to
+          flag all the mines!
+        </li>
+        <li>
+          Game Timer: The timer starts when you make your first click, so try to
+          solve the puzzle quickly!
+        </li>
+        <li>
+          Easy mode will make sure the area around your first click is all
+          clear!
+        </li>
+      </ul>
+
+      <div class="form container">
+        <form id="options">
+          <label for="boardSize">Board Size:</label>
+          <select id="boardSize" name="boardSize">
+            <option value="small">Small (8x8)</option>
+            <option value="medium">Medium (12x12)</option>
+            <option value="large">Large (15x15)</option>
+          </select>
+
+          <input
+            requried
+            type="radio"
+            id="easy"
+            name="game-level"
+            value="easy"
+          />
+          <label for="easy">Easy Mode</label>
+          <input type="radio" id="hard" name="game-level" value="hard" />
+          <label for="hard">Hard Mode</label>
+          <input id="submit-btn" type="submit" value="Click to Play!" />
+        </form>
+      </div>
+    </div>
 
     <div id="popup" class="popup">
       <div class="popup-content">
         <p id="message"></p>
         <button id="close-popup" class="close-btn">Close</button>
+        <button id="return" class="close-btn">Start Over</button>
       </div>
     </div>
-
-    <div class="game-info-container">
-      <div class="counter-container">
-        <div>MINES LEFT</div>
-        <div id="counter"></div>
+    <div id="game" class="hidden">
+      <div class="game-info-container">
+        <div class="counter-container">
+          <div>MINES LEFT</div>
+          <div id="counter"></div>
+        </div>
+        <div class="timer-container">
+          <div>TIME ELAPSED</div>
+          <div id="timer"></div>
+        </div>
       </div>
-      <div class="timer-container">
-        <div>TIME ELAPSED</div>
-        <div id="timer"></div>
-      </div>
+      <div class="board"></div>
+      <button id="reset">Reset</button>
     </div>
-    <div class="board"></div>
-    <button id="reset">Reset</button>
   </body>
 </html>

@@ -1,7 +1,10 @@
 /*-------------------------------- Constants --------------------------------*/
-const NUM_COLUMNS = 8;
-const NUM_ROWS = 8;
-const NUM_MINES = 9;
+const SMALL = 8;
+const MINES_SMALL = 9;
+const MED = 12;
+const MINES_MED = 15;
+const LARGE = 15;
+const MINES_LARGE = 30;
 const mine = "💣";
 const pinkFlag = "../assets/images/pink.png";
 const audioWin = new Audio("../assets/audio/win.mp3");
@@ -22,20 +25,27 @@ let board;
 let mineIndexes = [];
 let firstClick = false; //ensuring the first click is not a mine
 let mineFree = []; //this will store the location of the first click and the surrounding cells, so we don't put a mine there
-let minesLeftToFind = NUM_MINES;
 let gameState = "active";
 let gameTimer;
 let seconds = 0;
 let isRunning = false;
-let easyMode = false;
+let easyMode = true;
+let NUM_ROWS;
+let NUM_COLUMNS;
+let NUM_MINES;
+let minesLeftToFind;
 
 /*------------------------ Cached Element References ------------------------*/
+
 const boardElement = document.querySelector(".board");
 const counterElemement = document.getElementById("counter");
 const messageElement = document.getElementById("message");
 const timerElement = document.getElementById("timer");
 const instrElement = document.getElementById("instructions");
 const popupElement = document.getElementById("popup");
+const formElement = document.getElementById("options");
+const introElement = document.getElementById("intro");
+const gameElement = document.getElementById("game");
 
 /*----------------------------- Event Listeners -----------------------------*/
 
@@ -44,6 +54,8 @@ boardElement.addEventListener("contextmenu", handleRightClick);
 document.getElementById("reset").addEventListener("click", handleReset);
 document.getElementById("close-popup").addEventListener("click", closeMessage);
 
+document.getElementById("options").addEventListener("submit", handleForm);
+document.getElementById("return").addEventListener("click", showIntro);
 /*-------------------------------- Functions --------------------------------*/
 
 //This function places all the mines on the board and excludes the first cell that is clicked on to make game play easier for the user
@@ -162,7 +174,7 @@ function handleRightClick(event) {
 }
 
 function handleLeftClick(event) {
-  instructions.classList.add("hidden");
+  // instructions.classList.add("hidden");
   if (gameState === "active") {
     const cell = event.target.closest(".cell");
     let [row, col] = cell.id.split("--");
@@ -187,7 +199,6 @@ function handleLeftClick(event) {
     //   cell.textContent = board[row][col].adjacentMines;
     // }
     // cell.classList.add("revealed");
-  } else {
   }
 }
 
@@ -209,9 +220,8 @@ function checkForMine(row, col) {
     stopTimer();
     //mark all mines on board if they clicked on a mine
     gameState = "lost";
-
+    messageElement.textContent = "YOU LOSE!!";
     showMessage("YOU LOSE!!");
-
     audioLose.play();
     mineIndexes.forEach((mineStr) => {
       const cellElement = document.getElementById(mineStr);
@@ -235,6 +245,7 @@ function revealCells(row, col) {
     return; //if we've hit a mine, a flagged cell, or a cell that is already revealed
   }
   myCell.isRevealed = true;
+  const cellStr = `${row}--${col}`;
   if (myCell.adjacentMines) {
     return;
   }
@@ -341,7 +352,7 @@ function init() {
   seconds = 0;
   isRunning = false;
   updateTimer();
-  instrElement.classList.remove("hidden");
+  // instrElement.classList.remove("hidden");
 }
 
 function showMessage(message) {
@@ -352,10 +363,53 @@ function showMessage(message) {
 function closeMessage() {
   popupElement.style.display = "none";
   stopTimer();
-  init();
-  renderBoard();
+  // init();
+  // renderBoard();
 }
 
-document.documentElement.style.setProperty("--num-rows", NUM_ROWS);
-document.documentElement.style.setProperty("--num-cols", NUM_COLUMNS);
-createBoard();
+function handleForm(event) {
+  event.preventDefault();
+  const size = document.getElementById("boardSize").value;
+  console.log(size);
+  switch (size) {
+    case "small":
+      NUM_ROWS = SMALL;
+      NUM_COLUMNS = SMALL;
+      NUM_MINES = MINES_SMALL;
+      break;
+    case "medium":
+      NUM_ROWS = MED;
+      NUM_COLUMNS = MED;
+      NUM_MINES = MINES_MED;
+      break;
+    case "large":
+      NUM_ROWS = LARGE;
+      NUM_COLUMNS = LARGE;
+      NUM_MINES = MINES_LARGE;
+      break;
+  }
+  const mode = document.querySelector('input[name="game-level"]:checked').value;
+  console.log(mode);
+  // console.log(mode);
+  easyMode = mode === "easy" ? true : false;
+  minesLeftToFind = NUM_MINES;
+  document.documentElement.style.setProperty("--num-rows", NUM_ROWS);
+  document.documentElement.style.setProperty("--num-cols", NUM_COLUMNS);
+  createBoard();
+  init();
+  showGame();
+}
+
+function showIntro() {
+  closeMessage();
+  gameElement.style.display = "none";
+  introElement.style.display = "flex";
+  boardElement.replaceChildren();
+}
+
+function showGame() {
+  gameElement.style.display = "flex";
+  introElement.style.display = "none";
+}
+
+// createBoard();
