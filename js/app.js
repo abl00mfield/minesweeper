@@ -6,9 +6,9 @@ const MINES_MED = 25;
 const LARGE = 15;
 const MINES_LARGE = 35;
 const mine = "💣";
-const pinkFlag = "~/assets/images/pink.png";
-const audioWin = new Audio("~/assets/audio/win.mp3");
-const audioLose = new Audio("~/assets/audio/explosion.mp3");
+const pinkFlag = "../assets/images/pink.png";
+const audioWin = new Audio("../assets/audio/win.mp3");
+const audioLose = new Audio("../assets/audio/explosion.mp3");
 const MOVEMENTS = [
   [-1, -1], //top left
   [-1, 0], //top middle
