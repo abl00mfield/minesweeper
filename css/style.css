@@ -364,8 +364,8 @@ input[type="submit"] {
   transition: 0.3s ease;
 }
 input[type="submit"]:hover {
-  background: var(--main-blue);
-  color: var(--main-white);
+  background: var(--main-yellow);
+  color: black;
 }
 
 /* #intro {

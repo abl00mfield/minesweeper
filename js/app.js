@@ -1,10 +1,10 @@
 /*-------------------------------- Constants --------------------------------*/
 const SMALL = 8;
-const MINES_SMALL = 9;
+const MINES_SMALL = 10;
 const MED = 12;
-const MINES_MED = 15;
+const MINES_MED = 25;
 const LARGE = 15;
-const MINES_LARGE = 30;
+const MINES_LARGE = 35;
 const mine = "💣";
 const pinkFlag = "../assets/images/pink.png";
 const audioWin = new Audio("../assets/audio/win.mp3");
@@ -56,7 +56,6 @@ document
   .querySelector(".button-container")
   .addEventListener("click", handleButton);
 document.getElementById("close-popup").addEventListener("click", closeMessage);
-
 document.getElementById("options").addEventListener("submit", handleForm);
 document.getElementById("return").addEventListener("click", showIntro);
 /*-------------------------------- Functions --------------------------------*/
@@ -76,10 +75,9 @@ function placeMines() {
     } while (mineIndexes.includes(minePos) || mineFree.includes(minePos)); //check if there is already a mine there or if this is where they first clicked
     mineIndexes.push(minePos); //this string holds all the mine positions
     board[mineRow][mineCol].hasMine = true; //update the state of the board
-    const cell = document.getElementById(minePos);
-    cell.classList.add("mine");
+    // const cell = document.getElementById(minePos);    //shows where mines are for testing purposes
+    // cell.classList.add("mine");
   }
-  console.log(mineIndexes);
   calculateAdjacentMines(); //calculate the adjacent mines
 }
 
@@ -202,13 +200,6 @@ function handleLeftClick(event) {
     revealCells(row, col);
     renderBoard();
     checkForWin();
-    // console.log("revealed: ", document.querySelectorAll(".revealed").length);
-    // console.log("amount needed to win: ", NUM_ROWS * NUM_COLUMNS - NUM_MINES);
-
-    // if (board[row][col].adjacentMines) {
-    //   cell.textContent = board[row][col].adjacentMines;
-    // }
-    // cell.classList.add("revealed");
   }
 }
 
@@ -250,7 +241,6 @@ function revealCells(row, col) {
     return; //if we are off the board
   }
   myCell = board[row][col];
-  // console.log("inside revealCells, currentCell: ", myCell);
   if (myCell.isRevealed || myCell.isFlagged || myCell.hasMine) {
     return; //if we've hit a mine, a flagged cell, or a cell that is already revealed
   }
@@ -384,7 +374,6 @@ function closeMessage() {
 function handleForm(event) {
   event.preventDefault();
   const size = document.getElementById("boardSize").value;
-  console.log(size);
   switch (size) {
     case "small":
       NUM_ROWS = SMALL;
@@ -406,7 +395,6 @@ function handleForm(event) {
       break;
   }
   mode = document.querySelector('input[name="game-level"]:checked').value;
-  console.log(mode);
   easyMode = mode === "easy" ? true : false;
   minesLeftToFind = NUM_MINES;
   document.documentElement.style.setProperty("--num-rows", NUM_ROWS);
@@ -427,5 +415,3 @@ function showGame() {
   gameElement.style.display = "flex";
   introElement.style.display = "none";
 }
-
-// createBoard();
