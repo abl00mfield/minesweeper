@@ -10,6 +10,8 @@
   </head>
   <body>
     <h1>💣 MINESWEEPER 💣</h1>
+    <!-- introduction section of game -->
+
     <div id="intro">
       <h3>Welcome to the game! Here’s a quick guide to get you started:</h3>
       <ul>
@@ -65,6 +67,7 @@
       </div>
     </div>
 
+    <!-- popups for messaging during game -->
     <div id="popup" class="popup">
       <div class="popup-content">
         <p id="message"></p>
@@ -72,17 +75,19 @@
         <button id="return" class="close-btn">Start Over</button>
       </div>
     </div>
+
+    <!-- gameboard section of game -->
     <div id="game">
       <div class="game-info-container">
-        <div class="counter-container">
+        <div class="game-container">
           <div>MINES LEFT</div>
           <div id="counter"></div>
         </div>
-        <div class="timer-container">
+        <div class="game-container">
           <div>TIME ELAPSED</div>
           <div id="timer"></div>
         </div>
-        <div class="mode-container">
+        <div class="game-container">
           <div>MODE</div>
           <div id="mode"></div>
         </div>

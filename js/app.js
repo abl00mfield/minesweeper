@@ -1,6 +1,6 @@
 /*-------------------------------- Constants --------------------------------*/
 const SMALL = 8; //board sizes and mine counts
-const MINES_SMALL = 10;
+const MINES_SMALL = 9;
 const MED = 12;
 const MINES_MED = 25;
 const LARGE = 15;

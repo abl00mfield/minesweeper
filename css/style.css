@@ -21,15 +21,6 @@
   box-sizing: border-box;
 }
 
-/* body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Roboto", Arial, sans-serif;
-  background-image: url(../assets/images/white-texture.jpg);
-  gap: 10px;
-} */
-
 body {
   display: flex;
   flex-direction: column;
@@ -45,11 +36,6 @@ body {
   padding: 20px;
 }
 
-/* h1 {
-  font-size: 2.5em;
-  margin: 0px;
-  font-family: "Orbitron", Arial, sans-serif;
-} */
 h1 {
   font-size: 3em;
   font-family: "Press Start 2P", Arial, sans-serif;
@@ -57,123 +43,6 @@ h1 {
   text-align: center;
   color: var(--main-red);
 }
-
-#message {
-  font-size: calc(5vmin);
-}
-
-.cell img {
-  height: 80%;
-  width: 80%;
-}
-
-.board {
-  width: 500px;
-  display: grid;
-  grid-template-columns: repeat(var(--num-cols), 1fr);
-  grid-template-rows: repeat(var(--num-rows), 1fr);
-  background: var(--main-gray);
-  aspect-ratio: var(--num-cols) / var(--num-rows);
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-  /* background-color: var(--main-gray); */
-}
-
-#counter,
-#timer,
-#mode {
-  border: solid black 1px;
-  font-size: 1.2em;
-  padding: 10px;
-  color: var(--main-red);
-  font-family: "Press Start 2P", serif;
-  text-align: center;
-  margin-top: 5px;
-}
-
-/* #timer {
-  border: solid black 1px;
-  font-size: 1.5em;
-  padding: 5px;
-  color: var(--main-red);
-  font-family: "Press Start 2P", serif;
-  margin-top: 5px;
-  /* width: auto; */
-/* flex-shrink: 0; */
-
-.counter-container,
-.timer-container,
-.mode-container {
-  display: flex;
-  justify-content: space-evenly;
-  text-align: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 1.2em;
-}
-
-.game-info-container {
-  display: flex;
-  width: 500px;
-  justify-content: space-between;
-  text-align: center;
-  /* width: 30%; */
-  align-items: center;
-  font-size: 1em;
-  margin-bottom: 10px;
-}
-
-/* .cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border: 1px solid black;
-  background-color: var(--main-gray);
-  cursor: pointer;
-  font-size: calc(3vmin);
-} */
-
-.cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--dark-gray);
-  font-size: var(--font-sz);
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-}
-
-.cell:hover {
-  background: var(--light-gray);
-}
-
-.cell.revealed {
-  background: var(--main-white);
-}
-
-.cell.mine {
-  background: var(--main-red);
-}
-
-.cell.flagged {
-  background: var(--main-yellow);
-}
-
-#game {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* #intro {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
 
 #intro {
   background: white;
@@ -184,6 +53,7 @@ h1 {
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
+
 #intro h3 {
   font-size: 1.5em;
   font-family: "Orbitron", Arial, sans-serif;
@@ -191,136 +61,17 @@ h1 {
   margin: 10px;
 }
 
-/* button {
-  margin: 15px;
-  background-color: var(--main-red);
-  font-size: 1.5em;
-  font-family: "Orbitron", Arial, sans-serif;
-} */
-
-button {
-  margin: 10px;
-  background: var(--main-red);
-  color: white;
-  font-size: 1.3em;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  font-family: "Orbitron", Arial, sans-serif;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-button:hover {
-  background: var(--main-yellow);
-  color: black;
-}
-
-.blue {
-  color: var(--main-blue);
-}
-
-.green {
-  color: var(--main-green);
-}
-
-.orange {
-  color: var(--main-orange);
-}
-
-.purple {
-  color: var(--main-purple);
-}
-
-.red {
-  color: var(--main-red);
-}
-
-/* .hidden {
-  display: none;
-} */
-
-#game {
-  max-width: 100%;
-  max-height: 100vh;
-}
-
-/* The overlay background (cover the entire screen) */
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-  display: none; /* Initially hidden */
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* Ensure it appears above other content */
-}
-
-/* ul {
-  list-style: none;
-  margin-left: 0;
-  padding-left: 0;
-} */
-
 ul {
   text-align: left;
   padding: 0;
   list-style-type: none;
 }
 
-/* li {
-  padding-left: 1em;
-  text-indent: -1em;
-} */
-
-/* li:before {
-  content: "💣";
-  padding-right: 5px;
-} */
-
 li::before {
   content: "💣";
   padding-right: 8px;
   color: var(--main-orange);
 }
-/* The popup content box */
-.popup-content {
-  background-color: var(--main-red);
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  max-width: 300px;
-  width: 100%;
-  font-family: "Orbitron", Arial, sans-serif;
-}
-
-/* Button to close the popup */
-.close-btn {
-  margin-top: 10px;
-  padding: 10px 15px;
-  background-color: white;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.close-btn:hover {
-  background-color: var(--main-gray);
-}
-
-/* #submitBtn:hover {
-  background-color: white;
-} */
 
 .form.container {
   margin-top: 20px;
@@ -335,7 +86,6 @@ form {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  /* color: var(--main-purple); */
 }
 
 label {
@@ -363,15 +113,178 @@ input[type="submit"] {
   border-radius: 25px;
   transition: 0.3s ease;
 }
+
 input[type="submit"]:hover {
   background: var(--main-yellow);
   color: black;
 }
 
-/* #intro {
-  font-size: 1.5em;
-} */
+#game {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
 
-/* form {
+.game-info-container {
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+#counter,
+#timer,
+#mode {
   border: solid black 1px;
-} */
+  font-size: 1.2em;
+  padding: 10px;
+  color: var(--main-red);
+  font-family: "Press Start 2P", serif;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.game-container {
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.2em;
+}
+
+.board {
+  width: 500px;
+  display: grid;
+  grid-template-columns: repeat(var(--num-cols), 1fr);
+  grid-template-rows: repeat(var(--num-rows), 1fr);
+  background: var(--main-gray);
+  aspect-ratio: var(--num-cols) / var(--num-rows); /* maintain a square cell */
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--dark-gray);
+  font-size: var(--font-sz);
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.cell img {
+  height: 80%;
+  width: 80%;
+}
+
+.cell:hover {
+  background: var(--light-gray);
+}
+
+.cell.revealed {
+  background: var(--main-white);
+}
+
+.cell.mine {
+  background: var(--main-red);
+}
+
+.cell.flagged {
+  background: var(--main-yellow);
+}
+
+.blue {
+  color: var(--main-blue);
+}
+
+.green {
+  color: var(--main-green);
+}
+
+.orange {
+  color: var(--main-orange);
+}
+
+.purple {
+  color: var(--main-purple);
+}
+
+.red {
+  color: var(--main-red);
+}
+
+/* buttons at bottom of game */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  margin: 10px;
+  background: var(--main-red);
+  color: white;
+  font-size: 1.3em;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-family: "Orbitron", Arial, sans-serif;
+}
+
+button:hover {
+  background: var(--main-yellow);
+  color: black;
+}
+
+/* The overlay background (cover the entire screen) */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* The popup content box */
+.popup-content {
+  background-color: var(--main-red);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 300px;
+  width: 100%;
+  font-family: "Orbitron", Arial, sans-serif;
+}
+
+#message {
+  font-size: 1.4em;
+}
+
+/* Button to close the popup */
+.close-btn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.close-btn:hover {
+  background-color: var(--main-gray);
+}
