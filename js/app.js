@@ -46,12 +46,15 @@ const popupElement = document.getElementById("popup");
 const formElement = document.getElementById("options");
 const introElement = document.getElementById("intro");
 const gameElement = document.getElementById("game");
+const modeElement = document.getElementById("mode");
 
 /*----------------------------- Event Listeners -----------------------------*/
 
 boardElement.addEventListener("click", handleLeftClick);
 boardElement.addEventListener("contextmenu", handleRightClick);
-document.getElementById("reset").addEventListener("click", handleReset);
+document
+  .querySelector(".button-container")
+  .addEventListener("click", handleButton);
 document.getElementById("close-popup").addEventListener("click", closeMessage);
 
 document.getElementById("options").addEventListener("submit", handleForm);
@@ -73,6 +76,8 @@ function placeMines() {
     } while (mineIndexes.includes(minePos) || mineFree.includes(minePos)); //check if there is already a mine there or if this is where they first clicked
     mineIndexes.push(minePos); //this string holds all the mine positions
     board[mineRow][mineCol].hasMine = true; //update the state of the board
+    const cell = document.getElementById(minePos);
+    cell.classList.add("mine");
   }
   console.log(mineIndexes);
   calculateAdjacentMines(); //calculate the adjacent mines
@@ -140,6 +145,11 @@ function createBoard() {
   );
   counterElemement.textContent = minesLeftToFind; //initialize the counter
   updateTimer(); //initialize the timer
+  if (easyMode) {
+    modeElement.textContent = "EASY";
+  } else {
+    modeElement.textContent = "HARD";
+  }
 }
 
 function handleRightClick(event) {
@@ -293,10 +303,14 @@ function clearMineArea(row, col) {
   }
 }
 
-function handleReset() {
-  stopTimer();
-  init();
-  renderBoard();
+function handleButton(event) {
+  if (event.target.id === "reset") {
+    stopTimer();
+    init();
+    renderBoard();
+  } else if (event.target.id === "start-over") {
+    showIntro();
+  }
 }
 
 function updateTimer() {
@@ -376,21 +390,23 @@ function handleForm(event) {
       NUM_ROWS = SMALL;
       NUM_COLUMNS = SMALL;
       NUM_MINES = MINES_SMALL;
+      document.documentElement.style.setProperty("--font-sz", "1.7em");
       break;
     case "medium":
       NUM_ROWS = MED;
       NUM_COLUMNS = MED;
       NUM_MINES = MINES_MED;
+      document.documentElement.style.setProperty("--font-sz", "1.5em");
       break;
     case "large":
       NUM_ROWS = LARGE;
       NUM_COLUMNS = LARGE;
       NUM_MINES = MINES_LARGE;
+      document.documentElement.style.setProperty("--font-sz", "1.2em");
       break;
   }
-  const mode = document.querySelector('input[name="game-level"]:checked').value;
+  mode = document.querySelector('input[name="game-level"]:checked').value;
   console.log(mode);
-  // console.log(mode);
   easyMode = mode === "easy" ? true : false;
   minesLeftToFind = NUM_MINES;
   document.documentElement.style.setProperty("--num-rows", NUM_ROWS);
@@ -403,7 +419,7 @@ function handleForm(event) {
 function showIntro() {
   closeMessage();
   gameElement.style.display = "none";
-  introElement.style.display = "flex";
+  introElement.style.display = "block";
   boardElement.replaceChildren();
 }
 

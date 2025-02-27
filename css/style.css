@@ -9,8 +9,11 @@
   --main-white: white;
   --main-orange: #e4572e;
   --main-green: #23967f;
+  --dark-gray: #2e2e2e;
+  --light-gray: #e8e8e8;
   --num-rows: 9;
   --num-cols: 9;
+  --font-sz: 1em;
 }
 
 * {
@@ -18,32 +21,46 @@
   box-sizing: border-box;
 }
 
-body {
+/* body {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Roboto", Arial, sans-serif;
   background-image: url(../assets/images/white-texture.jpg);
   gap: 10px;
+} */
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Roboto", Arial, sans-serif;
+  background: linear-gradient(
+    to bottom right,
+    var(--light-gray),
+    var(--main-white)
+  );
+  color: var(--dark-gray);
+  gap: 15px;
+  padding: 20px;
 }
 
-h1 {
+/* h1 {
   font-size: 2.5em;
   margin: 0px;
   font-family: "Orbitron", Arial, sans-serif;
+} */
+h1 {
+  font-size: 3em;
+  font-family: "Press Start 2P", Arial, sans-serif;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: var(--main-red);
 }
 
 #message {
   font-size: calc(5vmin);
 }
-/* 
-#instructions {
-  text-align: center;
-  width: 60%;
-  font-size: 1.2em;
-  margin: 0px;
-  background-color: white;
-} */
 
 .cell img {
   height: 80%;
@@ -51,18 +68,23 @@ h1 {
 }
 
 .board {
+  width: 500px;
   display: grid;
   grid-template-columns: repeat(var(--num-cols), 1fr);
   grid-template-rows: repeat(var(--num-rows), 1fr);
-  width: 500px;
+  background: var(--main-gray);
   aspect-ratio: var(--num-cols) / var(--num-rows);
-  background-color: var(--main-gray);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  /* background-color: var(--main-gray); */
 }
 
 #counter,
-#timer {
+#timer,
+#mode {
   border: solid black 1px;
-  font-size: 1.5em;
+  font-size: 1.2em;
   padding: 10px;
   color: var(--main-red);
   font-family: "Press Start 2P", serif;
@@ -81,7 +103,8 @@ h1 {
 /* flex-shrink: 0; */
 
 .counter-container,
-.timer-container {
+.timer-container,
+.mode-container {
   display: flex;
   justify-content: space-evenly;
   text-align: center;
@@ -93,7 +116,7 @@ h1 {
 .game-info-container {
   display: flex;
   width: 500px;
-  justify-content: space-evenly;
+  justify-content: space-between;
   text-align: center;
   /* width: 30%; */
   align-items: center;
@@ -101,7 +124,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-.cell {
+/* .cell {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,18 +134,33 @@ h1 {
   background-color: var(--main-gray);
   cursor: pointer;
   font-size: calc(3vmin);
+} */
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--dark-gray);
+  font-size: var(--font-sz);
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.cell:hover {
+  background: var(--light-gray);
 }
 
 .cell.revealed {
-  background-color: var(--main-white);
+  background: var(--main-white);
 }
 
 .cell.mine {
-  background-color: var(--main-red);
+  background: var(--main-red);
 }
 
 .cell.flagged {
-  background-color: var(--main-yellow);
+  background: var(--main-yellow);
 }
 
 #game {
@@ -131,17 +169,56 @@ h1 {
   align-items: center;
 }
 
-#intro {
+/* #intro {
   display: flex;
   flex-direction: column;
   align-items: center;
+} */
+
+#intro {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+#intro h3 {
+  font-size: 1.5em;
+  font-family: "Orbitron", Arial, sans-serif;
+  color: var(--main-purple);
+  margin: 10px;
 }
 
-button {
+/* button {
   margin: 15px;
   background-color: var(--main-red);
   font-size: 1.5em;
   font-family: "Orbitron", Arial, sans-serif;
+} */
+
+button {
+  margin: 10px;
+  background: var(--main-red);
+  color: white;
+  font-size: 1.3em;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-family: "Orbitron", Arial, sans-serif;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+button:hover {
+  background: var(--main-yellow);
+  color: black;
 }
 
 .blue {
@@ -164,9 +241,9 @@ button {
   color: var(--main-red);
 }
 
-.hidden {
+/* .hidden {
   display: none;
-}
+} */
 
 #game {
   max-width: 100%;
@@ -187,22 +264,33 @@ button {
   z-index: 9999; /* Ensure it appears above other content */
 }
 
-ul {
+/* ul {
   list-style: none;
   margin-left: 0;
   padding-left: 0;
+} */
+
+ul {
+  text-align: left;
+  padding: 0;
+  list-style-type: none;
 }
 
-li {
+/* li {
   padding-left: 1em;
   text-indent: -1em;
-}
+} */
 
-li:before {
+/* li:before {
   content: "💣";
   padding-right: 5px;
-}
+} */
 
+li::before {
+  content: "💣";
+  padding-right: 8px;
+  color: var(--main-orange);
+}
 /* The popup content box */
 .popup-content {
   background-color: var(--main-red);
@@ -223,19 +311,66 @@ li:before {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .close-btn:hover {
   background-color: var(--main-gray);
 }
 
-#submitBtn:hover {
+/* #submitBtn:hover {
   background-color: white;
+} */
+
+.form.container {
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--light-gray);
+  border-radius: 10px;
+  text-align: center;
 }
 
-#intro {
-  font-size: 1.5em;
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  /* color: var(--main-purple); */
 }
+
+label {
+  font-weight: bold;
+  font-size: 1.3em;
+  color: var(--main-purple);
+}
+
+select,
+input[type="radio"],
+input[type="submit"] {
+  font-size: 1.3em;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid var(--main-purple);
+  cursor: pointer;
+  text-align: center;
+}
+
+input[type="submit"] {
+  background: var(--main-red);
+  color: white;
+  font-family: "Orbitron", Arial, sans-serif;
+  padding: 12px 20px;
+  border-radius: 25px;
+  transition: 0.3s ease;
+}
+input[type="submit"]:hover {
+  background: var(--main-blue);
+  color: var(--main-white);
+}
+
+/* #intro {
+  font-size: 1.5em;
+} */
 
 /* form {
   border: solid black 1px;
