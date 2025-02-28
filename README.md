@@ -31,4 +31,5 @@ This was a fun and interesting challenge that helped me further my JavaScript, H
 Resources:<br>
 [pink flag image](https://www.shareicon.net/flag-pink-mapmarker-66821) <br>
 [explosion sound](https://pixabay.com/sound-effects/medium-explosion-40472/) <br>
-[win sound](https://pixabay.com/sound-effects/marimba-win-e-3-209687/)
+[win sound](https://pixabay.com/sound-effects/marimba-win-e-3-209687/)<br>
+[coding timers](https://www.w3schools.com/js/js_timing.asp)
