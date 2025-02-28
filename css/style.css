@@ -177,6 +177,7 @@ input[type="submit"]:hover {
   text-align: center;
   cursor: pointer;
   transition: 0.2s ease-in-out;
+  color: white;
 }
 
 .cell img {
