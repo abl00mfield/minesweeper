@@ -2,13 +2,13 @@
 
 :root {
   --main-red: #f15bb5;
-  --main-blue: #00bbf9;
+  --main-blue: #007ea8;
   --main-yellow: #fee440;
   --main-purple: #681fc1;
   --main-gray: #f2e1eb;
   --main-white: white;
-  --main-orange: #e4572e;
-  --main-green: #23967f;
+  --main-orange: #c7421a;
+  --main-green: #196c5b;
   --dark-gray: #2e2e2e;
   --light-gray: #e8e8e8;
   --num-rows: 9; /*defaults - these will get set later depending on user input */
@@ -54,7 +54,7 @@ h1 {
   text-align: center;
 }
 
-#intro h3 {
+#intro h2 {
   font-size: 1.5em;
   font-family: "Orbitron", Arial, sans-serif;
   color: var(--main-purple);
@@ -107,7 +107,7 @@ input[type="submit"] {
 
 input[type="submit"] {
   background: var(--main-red);
-  color: white;
+  color: black;
   font-family: "Orbitron", Arial, sans-serif;
   padding: 12px 20px;
   border-radius: 25px;
@@ -229,7 +229,7 @@ input[type="submit"]:hover {
 button {
   margin: 10px;
   background: var(--main-red);
-  color: white;
+  color: black;
   font-size: 1.3em;
   border: none;
   padding: 10px 20px;
