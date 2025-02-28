@@ -11,7 +11,7 @@
   --main-green: #23967f;
   --dark-gray: #2e2e2e;
   --light-gray: #e8e8e8;
-  --num-rows: 9;
+  --num-rows: 9; /*defaults - these will get set later depending on user input */
   --num-cols: 9;
   --font-sz: 1em;
 }

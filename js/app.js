@@ -59,6 +59,7 @@ formElement.addEventListener("submit", handleForm);
 document.getElementById("return").addEventListener("click", showIntro);
 /*-------------------------------- Functions --------------------------------*/
 
+/* this function shows the intro page of the game with instructions and choices */
 function showIntro() {
   closeMessage();
   gameElement.style.display = "none"; //hide the gameboard
@@ -76,7 +77,7 @@ function handleForm(event) {
     case "small":
       NUM_ROWS = NUM_COLUMNS = SMALL;
       NUM_MINES = MINES_SMALL;
-      document.documentElement.style.setProperty("--font-sz", "1.7em");
+      document.documentElement.style.setProperty("--font-sz", "1.7em"); //font is bigger because cells are larger
       break;
     case "medium":
       NUM_ROWS = NUM_COLUMNS = MED;
@@ -89,9 +90,10 @@ function handleForm(event) {
       document.documentElement.style.setProperty("--font-sz", "1.2em");
       break;
   }
-  mode = document.querySelector('input[name="game-level"]:checked').value;
-  easyMode = mode === "easy" ? true : false;
   minesLeftToFind = NUM_MINES;
+  mode = document.querySelector('input[name="game-level"]:checked').value; //get value from radio button
+  easyMode = mode === "easy" ? true : false;
+
   document.documentElement.style.setProperty("--num-rows", NUM_ROWS);
   document.documentElement.style.setProperty("--num-cols", NUM_COLUMNS);
   createBoard();
@@ -166,7 +168,7 @@ function createBoard() {
 }
 
 /*this function creates an array of coordinates where a mine should not be placed
-this ensures that the first place the user clicks and all the squares around it 
+this ensures that the first place the user clicks and all the squares around it (if easy mode)
 will be free of mines */
 
 function clearMineArea(row, col) {
@@ -183,8 +185,8 @@ function clearMineArea(row, col) {
   }
 }
 
-/*This function places all the mines on the board and excludes the first cell that is clicked on to make game play easier for the user
-There is an easy mode that also clears the area around the first click to make game play easier */
+/*This function places all the mines on the board and excludes the previously computed area
+where mines should not be placed */
 
 function placeMines() {
   let mineRow = null;
@@ -195,7 +197,7 @@ function placeMines() {
       mineRow = Math.floor(Math.random() * NUM_ROWS); //generate an random row and column
       mineCol = Math.floor(Math.random() * NUM_COLUMNS);
       minePos = mineRow.toString() + "--" + mineCol.toString();
-    } while (mineIndexes.includes(minePos) || mineFree.includes(minePos)); //check if there is already a mine there or if this is where they first clicked
+    } while (mineIndexes.includes(minePos) || mineFree.includes(minePos)); //check if there is already a mine there or list of mine free zone
     mineIndexes.push(minePos); //this string holds all the mine positions
     board[mineRow][mineCol].hasMine = true; //update the state of the board
   }
@@ -208,7 +210,7 @@ the adjacent mine counts */
 function calculateAdjacentMines() {
   for (let r = 0; r < NUM_ROWS; r++) {
     for (let c = 0; c < NUM_COLUMNS; c++) {
-      const cellElement = document.getElementById(`${r}--${c}`); //grad the cellElement
+      const cellElement = document.getElementById(`${r}--${c}`); //grab the cellElement
       if (!board[r][c].hasMine) {
         let mineCount = 0;
         for (let [dirR, dirC] of MOVEMENTS) {
