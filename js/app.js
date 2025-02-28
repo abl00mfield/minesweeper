@@ -331,12 +331,10 @@ function revealCells(row, col) {
     return; //if we've hit a mine, a flagged cell, or a cell that is already revealed
   }
   myCell.isRevealed = true; //reveal the cell that has been clicked on
-  const cellStr = `${row}--${col}`;
   if (myCell.adjacentMines) {
     //do not contine further on if the cell has adjacent mines
     return;
   }
-
   //now call the function on all of the surrounding cells
   for (let [checkRow, checkCol] of MOVEMENTS) {
     let newRow = row + checkRow;
