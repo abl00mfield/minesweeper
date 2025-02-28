@@ -10,15 +10,15 @@ Link -> https://abl00mfield.github.io/minesweeper/
 
 The first page you will see upon clicking the link is some instructions and some options for the game.
 
-!["opening screen"](assets/images/Screenshot%202025-02-27%20at%205.05.55 PM.png)
+!["opening screen"](assets/images/Screenshot1.png)
 
 You can chose between 3 different board sizes and easy or hard mode. The easy mode ensures that the first cell you click on and all of the surrounding cells will not contain any mines.
 
-!["blank game board"](assets/images/Screenshot%202025-02-27%20at%205.08.24 PM.png)
+!["blank game board"](assets/images/Screenshot2.png)
 
 Once you have started the game you can start to "flag" by using a right click which cells you think contain mines. This will help you as you navigate the board and the counter at the top lets you know how many more mines you need to find. Once you clear all the squares that do not contain mines, you have won the game!
 
-!["game in play"](assets/images/Screenshot%202025-02-27%20at%205.09.35 PM.png)
+!["game in play"](assets/images/Screenshot3.png)
 
 A couple of reasons why I chose to implement this game was that it is very nostalgic since I played it a lot growing up. Another reason that I chose to implement this game is that it uses recursion to clear the board when clicking on squares. Recursion is a really cool programming technique that has a function call itself to accomplish certain tasks. In recursion, you always need to have at least one base case where the function will return to the prior call. Even though recursion can sometimes be difficult to wrap your brain around, in many cases it is the most simple way to accomplish the task. In Minesweeper, I needed to clear the board starting from the cell that a user clicks on. The function works by first checking if the cell you are on is a mine, flagged, or outside the grid. These are the bases cases that the function will return from. Then it clears the square, and if it's blank, it goes through a loop of the coordinates that are all around the squaure and calls the function again on each of these coordinates. This is the best way to locate all the cells that are blank and therefore need to be revealed.
 
