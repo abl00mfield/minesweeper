@@ -35,6 +35,7 @@ let NUM_COLUMNS;
 let NUM_MINES;
 let minesLeftToFind;
 let touchTimer = null;
+let touchMoved = false;
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -62,6 +63,7 @@ boardElement.addEventListener("touchstart", handleTouchStart, {
   passive: false,
 });
 boardElement.addEventListener("touchend", handleTouchEnd);
+boardElement.addEventListener("touchmove", handleTouchMove);
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -308,6 +310,7 @@ function handleRightClick(event) {
 }
 
 function handleTouchStart(e) {
+  touchMoved = false;
   e.preventDefault();
   const cell = e.target.closest(".cell");
   if (!cell) return;
@@ -317,8 +320,20 @@ function handleTouchStart(e) {
   }, 500); // 500ms long-press triggers flag
 }
 
-function handleTouchEnd() {
+function handleTouchMove() {
+  touchMoved = true;
   clearTimeout(touchTimer);
+}
+
+function handleTouchEnd(e) {
+  if (!touchMoved && touchTimer) {
+    clearTimeout(touchTimer);
+    // short tap = reveal (left click equivalent)
+    const cell = e.target.closest(".cell");
+    if (cell) {
+      cell.click(); // manually trigger left click
+    }
+  }
 }
 
 function checkForMine(row, col) {
