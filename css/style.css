@@ -311,6 +311,14 @@ button:hover {
   #intro {
     width: 95%;
   }
+
+  label {
+    font-size: 1em;
+  }
+
+  select {
+    font-size: 1em;
+  }
 }
 
 @media (max-width: 500px) {
