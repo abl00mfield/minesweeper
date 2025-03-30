@@ -34,6 +34,7 @@ let NUM_ROWS;
 let NUM_COLUMNS;
 let NUM_MINES;
 let minesLeftToFind;
+let touchTimer = null;
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -57,6 +58,11 @@ document
 document.getElementById("close-popup").addEventListener("click", closeMessage);
 formElement.addEventListener("submit", handleForm);
 document.getElementById("return").addEventListener("click", showIntro);
+boardElement.addEventListener("touchstart", handleTouchStart, {
+  passive: true,
+});
+boardElement.addEventListener("touchend", handleTouchEnd);
+
 /*-------------------------------- Functions --------------------------------*/
 
 /* this function shows the intro page of the game with instructions and choices */
@@ -299,6 +305,19 @@ function handleRightClick(event) {
     }
     counterElement.textContent = minesLeftToFind; //update counter
   }
+}
+
+function handleTouchStart(e) {
+  const cell = e.target.closest(".cell");
+  if (!cell) return;
+
+  touchTimer = setTimeout(() => {
+    handleRightClick({ target: cell, preventDefault: () => {} });
+  }, 500); // 500ms long-press triggers flag
+}
+
+function handleTouchEnd() {
+  clearTimeout(touchTimer);
 }
 
 function checkForMine(row, col) {
