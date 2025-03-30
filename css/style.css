@@ -290,3 +290,30 @@ button:hover {
 .close-btn:hover {
   background-color: var(--main-gray);
 }
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2em;
+  }
+  .game-container {
+    font-size: 1em;
+  }
+  .game-info-container {
+    width: 100%;
+  }
+  .board {
+    width: 375px;
+  }
+  .cell {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 1.3em;
+  }
+  .board {
+    width: 350px;
+  }
+}
