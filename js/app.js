@@ -59,7 +59,7 @@ document.getElementById("close-popup").addEventListener("click", closeMessage);
 formElement.addEventListener("submit", handleForm);
 document.getElementById("return").addEventListener("click", showIntro);
 boardElement.addEventListener("touchstart", handleTouchStart, {
-  passive: true,
+  passive: false,
 });
 boardElement.addEventListener("touchend", handleTouchEnd);
 
@@ -308,6 +308,7 @@ function handleRightClick(event) {
 }
 
 function handleTouchStart(e) {
+  e.preventDefault();
   const cell = e.target.closest(".cell");
   if (!cell) return;
 
