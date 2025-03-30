@@ -307,6 +307,10 @@ button:hover {
   .cell {
     font-size: 1em;
   }
+
+  #intro {
+    width: 95%;
+  }
 }
 
 @media (max-width: 500px) {
